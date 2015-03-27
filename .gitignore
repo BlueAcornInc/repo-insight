@@ -1,0 +1,15 @@
+#### Composer
+composer.phar
+vendor/
+
+#### IDE
+/.project
+/.classpath
+/.buildpath
+/.settings/
+/.idea
+*.iml
+
+
+#### GENERAL
+.DS_Store

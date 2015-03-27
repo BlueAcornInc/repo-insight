@@ -1,0 +1,14 @@
+{
+    "name": "blueacorn/repo-insight",
+    "description": "glean insight into [beanstalk hosted] git repositories",
+    "license": "blueacorn",
+    "require": {
+        "symfony/console": "2.*",
+        "herrera-io/phar-update": "1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "BlueAcorn": "src"
+        }
+    }
+}

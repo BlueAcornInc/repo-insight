@@ -1,0 +1,22 @@
+{
+    "chmod": "0755",
+    "directories": [
+        "src"
+    ],
+    "files": [
+        "vendor/herrera-io/phar-update/res/schema.json"
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": [
+                "Tests"
+            ],
+            "in": "vendor"
+        }
+    ],
+    "git-version": "package_version",
+    "main": "bin/repo-insight",
+    "output": "repo-insight.phar",
+    "stub": true
+}
