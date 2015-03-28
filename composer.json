@@ -4,7 +4,8 @@
     "license": "blueacorn",
     "require": {
         "symfony/console": "2.*",
-        "herrera-io/phar-update": "1.*"
+        "herrera-io/phar-update": "1.*",
+        "blueacorn/beanstalkapp-api": "dev-master"
     },
     "autoload": {
         "psr-0": {

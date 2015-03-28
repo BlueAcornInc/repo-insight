@@ -5,6 +5,10 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use BlueAcorn\BeanstalkAppApi\BeanstalkAppAPI;
+use BlueAcorn\BeanstalkAppApi\BeanstalkAppAPIException;
+
+
 class ListCommand extends Command
 {
 
@@ -15,6 +19,8 @@ class ListCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $x = new BeanstalkAppAPI();
         $output->writeln('.... repo list test ....');
     }
 }
