@@ -4,8 +4,35 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "10c030d10f075ae5570f7f36777b865f",
+    "hash": "843c5c65f3feec886a5cce9c0af50ac7",
     "packages": [
+        {
+            "name": "blueacorn/beanstalkapp-api",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BlueAcornInc/beanstalkapp-api.git",
+                "reference": "a92365350ee0a18e68626d0e16b2b75fa62a14f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BlueAcornInc/beanstalkapp-api/zipball/a92365350ee0a18e68626d0e16b2b75fa62a14f6",
+                "reference": "a92365350ee0a18e68626d0e16b2b75fa62a14f6",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BlueAcorn\\beanstalkapp\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL"
+            ],
+            "description": "SimpleXML wrapper for the beanstalkapp.com API",
+            "time": "2015-03-28 03:47:33"
+        },
         {
             "name": "herrera-io/json",
             "version": "1.0.3",
@@ -342,7 +369,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "blueacorn/beanstalkapp-api": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

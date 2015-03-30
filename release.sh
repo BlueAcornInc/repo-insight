@@ -45,6 +45,7 @@ if [ ! $? -eq 0 ]; then
   throw "git failed adding release"
 fi
 
+git add repo-insight.phar
 git add releases/repo-insight-${VERSION}.phar
 if [ ! $? -eq 0 ]; then
   throw "git failed adding release"
