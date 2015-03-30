@@ -1,0 +1,8 @@
+[
+    {
+        "name": "repo-insight.phar",
+        "sha1": "@@sha1@@",
+        "url": "http://gitlab.dev/brice.burgess/repo-insight/raw/master/releases/repo-insight-@@version@@.phar",
+        "version": "@@version@@"
+    }
+]
