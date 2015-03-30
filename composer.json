@@ -8,8 +8,8 @@
         "blueacorn/beanstalkapp-api": "dev-master"
     },
     "autoload": {
-        "psr-0": {
-            "BlueAcorn": "src"
+        "psr-4": {
+            "BlueAcorn\\RepoInsight\\": "src"
         }
     }
 }

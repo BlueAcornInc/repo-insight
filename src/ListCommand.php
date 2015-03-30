@@ -5,8 +5,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use BlueAcorn\BeanstalkAppApi\BeanstalkAppAPI;
-use BlueAcorn\BeanstalkAppApi\BeanstalkAppAPIException;
+use BlueAcorn\beanstalkapp\BeanstalkAppAPI;
 
 
 class ListCommand extends Command
