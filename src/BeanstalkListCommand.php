@@ -18,9 +18,8 @@ class BeanstalkListCommand extends BeanstalkCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $repositories = $this->getAllRepos();
-        $application = $this->getApplication();
 
+        $repositories = $this->getAllRepositories();
         $output->write($this->formattedOutput($repositories), $output::OUTPUT_RAW);
     }
 }

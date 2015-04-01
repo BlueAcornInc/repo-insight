@@ -15,6 +15,10 @@ class BeanstalkCommand extends ApplicationCommand
      */
     protected $beanstalk = null;
 
+    protected $beanstalk_repositories = null;
+
+    protected $beanstalk_repository_branches = array();
+
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         parent::initialize($input, $output);
@@ -38,38 +42,101 @@ class BeanstalkCommand extends ApplicationCommand
             $config['beanstalk_token']);
     }
 
-    protected function getAllRepos()
+    // helper utilities
+    ///////////////////
+
+
+    // @todo improve cache across multiple runs (1min?)
+    protected function getAllRepositories()
     {
-        $page = 1;
-        $repositories = array();
+        if ($this->beanstalk_repositories === null) {
+            $page = 1;
+            $this->beanstalk_repositories = array();
 
-        while ($page) {
+            while ($page) {
 
-            $repos = $this->beanstalk->find_all_repositories($page);
+                $response = $this->beanstalk->find_all_repositories($page);
 
-            if (count($repos)) {
+                if (count($response)) {
 
-                foreach ($repos as $repo) {
+                    foreach ($response as $repoResponse) {
+                        $repo = $this->buildRepository($repoResponse);
 
-                    $repo = $repo->repository;
+                        if ($repo && ! empty($repo['id'])) {
+                            $this->beanstalk_repositories[$repo['id']] = $repo;
+                        }
+                    }
 
-                    $repositories[] = array(
-                        'id' => $repo->id,
-                        'name' => $repo->name,
-                        'created' => $repo->created_at,
-                        'last_commit' => $repo->last_commit_at,
-                        'size' => $repo->storage_used_bytes / 1024,
-                        'url' => $repo->repository_url
-                    );
+                    $page ++;
+                } else {
+                    $page = 0;
                 }
-
-                $page ++;
-            } else {
-                $page = 0;
             }
         }
 
-        return $repositories;
+        return $this->beanstalk_repositories;
+    }
+
+    protected function getRepository($repo_id_or_url)
+    {
+        if (! is_numeric($repo_id_or_url)) {
+            foreach ($this->getAllRepositories() as $repo) {
+                if ($repo_id_or_url == $repo['url']) {
+                    return $repo;
+                }
+            }
+        }
+
+        if ($this->beanstalk_repositories && ! empty($this->beanstalk_repositories[$repo_id_or_url])) {
+            return $this->beanstalk_repositories[$repo_id_or_url];
+        }
+
+        $response = $this->beanstalk->find_single_repository($repo_id_or_url);
+
+        return $this->buildRepository($response);
+    }
+
+    protected function getRepositoryBranches($repo_id)
+    {
+        if (empty($this->beanstalk_repository_branches[$repo_id])) {
+
+            $branches = array();
+            $response = $this->beanstalk->find_repository_branches($repo_id);
+            foreach ($response as $branchResponse) {
+                $branches[] = $branchResponse->branch;
+            }
+
+            $this->beanstalk_repository_branches[$repo_id] = $branches;
+        }
+
+        return $this->beanstalk_repository_branches[$repo_id];
+    }
+
+    protected function getRepositoryFeatureBranches($repo_id)
+    {
+        $branches = array();
+
+        foreach($this->getRepositoryBranches($repo_id) as $branch) {
+            if (preg_match('/^features?\//i', $branch)) {
+                $branches[] = $branch;
+            }
+        }
+
+        return $branches;
+    }
+
+    private function buildRepository($apiResponse)
+    {
+        $repo = $apiResponse->repository;
+
+        return array(
+            'id' => $repo->id,
+            'name' => $repo->name,
+            'created' => $repo->created_at,
+            'last_commit' => $repo->last_commit_at,
+            'size' => $repo->storage_used_bytes / 1024,
+            'url' => $repo->repository_url
+        );
     }
 }
 
