@@ -3,7 +3,9 @@
     "description": "glean insight into [beanstalk hosted] git repositories",
     "license": "blueacorn",
     "require": {
-        "symfony/console": "2.*",
+        "symfony/console": "2.6.*",
+        "symfony/event-dispatcher": "2.6.*",
+        "symfony/yaml": "2.6.*",
         "herrera-io/phar-update": "1.*",
         "blueacorn/beanstalkapp-api": "dev-master"
     },
