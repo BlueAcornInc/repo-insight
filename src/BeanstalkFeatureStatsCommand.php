@@ -28,22 +28,17 @@ class BeanstalkFeatureStatsCommand extends BeanstalkCommand
             throw new \Exception('Repository not found!');
         }
 
-        $response = $this->beanstalk->find_repository_branches($repository['id']);
 
-        foreach($response as $branchResponse) {
-            $branch_name = $branchResponse->branch;
-
-            if(preg_match('/^features?\//i',$branch_name)) {
-                $repository['feature_branch_count']++;
-            }
-
-
-            // determine if branch is active
-
+        $branches = $this->getRepositoryBranches($repository['id']);
+        if(!in_array($branch,$branches)) {
+            throw new \Exception('Branch does not appear to belong to this repository');
         }
 
 
-        $output->write($this->formattedOutput(array($repository)), $output::OUTPUT_RAW);
+        // @todo get branch size
+
+
+        $output->write($this->formattedOutput(array($branch)), $output::OUTPUT_RAW);
     }
 }
 

@@ -46,10 +46,10 @@ class ApplicationCommand extends Command
 
     // utility helpers
     //////////////////
-    protected function formattedOutput($outputArray)
+    protected function formattedOutput($outputArray, $include_array_keys = true)
     {
         $application = $this->getApplication();
-        return ($this->format == 'csv') ? $this->arrayToCsv($outputArray) : $this->arrayToJSON($outputArray);
+        return ($this->format == 'csv') ? $this->arrayToCsv($outputArray, $include_array_keys) : $this->arrayToJSON($outputArray);
     }
 
     public function arrayToCsv($array, $include_header_row = true)
@@ -62,6 +62,7 @@ class ApplicationCommand extends Command
         }
 
         foreach ($array as $row) {
+            if(!is_array($row)) { $row = array($row); }
             fputcsv($csv, $row);
         }
 

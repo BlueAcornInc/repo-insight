@@ -15,6 +15,7 @@ class Application extends BaseApplication {
 
     protected $_config = array();
     const DEFAULT_CONFIG_FILE = '.repo-insight.yml';
+    const FEATURE_BRANCH_PATTERN = '/^features?\//i';
 
 
     public function __construct($name = 'UNKNOWN', $version = 'UNKNOWN')

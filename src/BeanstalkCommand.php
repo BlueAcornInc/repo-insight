@@ -4,6 +4,7 @@ namespace BlueAcorn\RepoInsight;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use BlueAcorn\RepoInsight\Application;
 use BlueAcorn\beanstalkapp\BeanstalkAppAPI;
 
 //@ todo adapter pattern for services
@@ -103,7 +104,7 @@ class BeanstalkCommand extends ApplicationCommand
             $branches = array();
             $response = $this->beanstalk->find_repository_branches($repo_id);
             foreach ($response as $branchResponse) {
-                $branches[] = $branchResponse->branch;
+                $branches[] = $this->buildBranch($branchResponse);
             }
 
             $this->beanstalk_repository_branches[$repo_id] = $branches;
@@ -116,8 +117,8 @@ class BeanstalkCommand extends ApplicationCommand
     {
         $branches = array();
 
-        foreach($this->getRepositoryBranches($repo_id) as $branch) {
-            if (preg_match('/^features?\//i', $branch)) {
+        foreach ($this->getRepositoryBranches($repo_id) as $branch) {
+            if ($branch['is_feature']) {
                 $branches[] = $branch;
             }
         }
@@ -136,6 +137,34 @@ class BeanstalkCommand extends ApplicationCommand
             'last_commit' => $repo->last_commit_at,
             'size' => $repo->storage_used_bytes / 1024,
             'url' => $repo->repository_url
+        );
+    }
+
+    private function buildBranch($apiResponse)
+    {
+        $branch = $apiResponse->branch;
+        $feature_pattern = '/^features?\//i';
+
+        $feature = (preg_match(Application::FEATURE_BRANCH_PATTERN, $branch));
+        $attask = '';
+        $description = '';
+
+        if ($feature) {
+
+            $components = explode('_', preg_replace(Application::FEATURE_BRANCH_PATTERN, '', $branch));
+            $attask_id = array_shift($components);
+
+            if (is_numeric($attask_id)) {
+                $attask = $attask_id;
+                $description = implode(' ', $components);
+            }
+        }
+
+        return array(
+            'branch' => $branch,
+            'is_feature' => ($feature) ? 'yes' : 'no',
+            'workfront_id' => $attask,
+            'description' => $description
         );
     }
 }

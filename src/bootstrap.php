@@ -18,5 +18,8 @@ foreach(glob(__DIR__ . '/*Command.php') as $class_filename) {
 
 $application->add(new BeanstalkListCommand());
 $application->add(new BeanstalkStatsCommand());
+$application->add(new BeanstalkFeatureListCommand());
+$application->add(new BeanstalkFeatureStatsCommand());
+
 
 

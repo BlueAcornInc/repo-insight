@@ -6,12 +6,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class BeanstalkStatsCommand extends BeanstalkCommand
+class BeanstalkFeatureListCommand extends BeanstalkCommand
 {
 
     protected function configure()
     {
-        $this->setName('beanstalk:stats')->setDescription('list all available repositories');
+        $this->setName('beanstalk:feature-list')->setDescription('get a list of feature branches');
         $this->addArgument('repo', InputArgument::REQUIRED, 'Repository Beanstalk ID (int) or URL (git://)');
 
         parent::configure();
@@ -26,18 +26,9 @@ class BeanstalkStatsCommand extends BeanstalkCommand
         }
 
 
-        // add additional stats
-        $response = $this->beanstalk->find_repository_branches($repository['id']);
+        $feature_branches = $this->getRepositoryFeatureBranches($repository['id']);
 
-        $repository['branch_count'] = count($this->getRepositoryBranches($repository['id']));
-        $repository['feature_branch_count'] = count($this->getRepositoryFeatureBranches($repository['id']));
-        $repository['feature_branch_active_count'] = 0;
-
-
-        // @todo add feature branch aggregate size
-
-
-        $output->write($this->formattedOutput(array($repository)), $output::OUTPUT_RAW);
+        $output->write($this->formattedOutput($feature_branches), $output::OUTPUT_RAW);
     }
 }
 
