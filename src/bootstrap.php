@@ -1,7 +1,8 @@
 <?php
-
-
 namespace BlueAcorn\RepoInsight;
+
+// require attask
+require_once(__DIR__ . '/../lib/attask/src/StreamClient.php');
 
 $application = new Application('RepoInsight','@package_version@');
 
