@@ -16,12 +16,14 @@ class BeanstalkListCommand extends BeanstalkCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('.... repo list test ....');
+
+        $repositories = $this->getAllRepos();
+        $application = $this->getApplication();
 
 
-        $repositories = $this->beanstalk->find_all_repositories();
-        var_dump($repositories);
+        $csvStr = $application->arrayToCSV($repositories);
 
+        $output->write($csvStr,$output::OUTPUT_RAW);
     }
 }
 

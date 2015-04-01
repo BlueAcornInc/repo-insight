@@ -53,4 +53,28 @@ class Application extends BaseApplication {
         return $this->_config = $config;
     }
 
+
+    // utility helpers
+    //////////////////
+
+    public function arrayToCsv($array, $include_header_row = true) {
+
+        $csv = fopen('php://temp','w+');
+
+        if($include_header_row) {
+            $first_row_keys = array_keys($array[0]);
+            fputcsv($csv, $first_row_keys);
+        }
+
+        foreach($array as $row) {
+            fputcsv($csv, $row);
+        }
+
+        rewind($csv);
+        $csvStr = stream_get_contents($csv);
+        fclose($csv);
+
+        return $csvStr;
+    }
+
 }
