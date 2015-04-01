@@ -4,7 +4,7 @@ namespace BlueAcorn\RepoInsight;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
+use Symfony\Component\Console\Input\InputArgument;
 
 class BeanstalkListCommand extends BeanstalkCommand
 {
@@ -12,18 +12,16 @@ class BeanstalkListCommand extends BeanstalkCommand
     protected function configure()
     {
         $this->setName('beanstalk:list')->setDescription('list all available repositories');
+
+        parent::configure();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $repositories = $this->getAllRepos();
         $application = $this->getApplication();
 
-
-        $csvStr = $application->arrayToCSV($repositories);
-
-        $output->write($csvStr,$output::OUTPUT_RAW);
+        $output->write($this->formattedOutput($repositories), $output::OUTPUT_RAW);
     }
 }
 
