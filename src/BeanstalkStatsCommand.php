@@ -27,7 +27,9 @@ class BeanstalkStatsCommand extends BeanstalkCommand
 
 
         // add additional stats
-        $response = $this->beanstalk->find_repository_branches($repository['id']);
+
+        $beanstalk = $this->getApplication()->getService('beanstalk');
+        $response = $beanstalk->find_repository_branches($repository['id']);
 
         $repository['branch_count'] = count($this->getRepositoryBranches($repository['id']));
         $repository['feature_branch_count'] = count($this->getRepositoryFeatureBranches($repository['id']));

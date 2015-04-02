@@ -39,8 +39,9 @@ class BeanstalkCommand extends ApplicationCommand
                 'config file must contain the following definitions; ' . implode(', ', $required_keys));
         }
 
-        $this->beanstalk = new BeanstalkAppAPI($config['beanstalk_account'], $config['beanstalk_username'],
-            $config['beanstalk_token']);
+        $application->addService('beanstalk',
+            new BeanstalkAppAPI($config['beanstalk_account'], $config['beanstalk_username'],
+                $config['beanstalk_token']));
     }
 
     // helper utilities
@@ -51,12 +52,15 @@ class BeanstalkCommand extends ApplicationCommand
     protected function getAllRepositories()
     {
         if ($this->beanstalk_repositories === null) {
+            $beanstalk = $this->getApplication()->getService('beanstalk');
             $page = 1;
             $this->beanstalk_repositories = array();
 
+
+
             while ($page) {
 
-                $response = $this->beanstalk->find_all_repositories($page);
+                $response = $beanstalk->find_all_repositories($page);
 
                 if (count($response)) {
 
@@ -92,7 +96,8 @@ class BeanstalkCommand extends ApplicationCommand
             return $this->beanstalk_repositories[$repo_id_or_url];
         }
 
-        $response = $this->beanstalk->find_single_repository($repo_id_or_url);
+        $beanstalk = $this->getApplication()->getService('beanstalk');
+        $response = $beanstalk->find_single_repository($repo_id_or_url);
 
         return $this->buildRepository($response);
     }
@@ -101,8 +106,9 @@ class BeanstalkCommand extends ApplicationCommand
     {
         if (empty($this->beanstalk_repository_branches[$repo_id])) {
 
+            $beanstalk = $this->getApplication()->getService('beanstalk');
             $branches = array();
-            $response = $this->beanstalk->find_repository_branches($repo_id);
+            $response = $beanstalk->find_repository_branches($repo_id);
             foreach ($response as $branchResponse) {
                 $branches[] = $this->buildBranch($branchResponse);
             }
