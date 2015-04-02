@@ -1,8 +1,8 @@
 [
     {
         "name": "repo-insight.phar",
-        "sha1": "6d8567ad43279e512aa23b2fe941948da82795b3",
-        "url": "http://gitlab.dev/brice.burgess/repo-insight/raw/master/releases/repo-insight-1.0.1.phar",
-        "version": "1.0.1"
+        "sha1": "a0be9acd1a29c848df5400e281e7e5c6e4443014",
+        "url": "http://gitlab.dev/brice.burgess/repo-insight/raw/master/releases/repo-insight-1.0.2.phar",
+        "version": "1.0.2"
     }
 ]
