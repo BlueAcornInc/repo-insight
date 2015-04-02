@@ -82,15 +82,41 @@ Examples
 List available commands:
 ```repo-insight list```
 
-Write list of beanstalk repositores to a CSV file (~/beanstalk_repos.csv)
+Write list of beanstalk repositores to ~/beanstalk_repos.csv
 ```repo-insight beanstalk:list > ~/beanstalk_repos.csv```
 
-Write list of beanstalk repositories to a JSON file, including stats
-```repo-insight beanstalk:list json --stats > ~/beanstalk_repos.json```
+Write list of beanstalk repositories, but as a JSON file
+```repo-insight beanstalk:list json > ~/beanstalk_repos.json```
 
 See arguments and options available to the beanstalk:feature-stats command
 ```repo-insight help beanstalk:feature-stats```
 
+
+Get a list of all feature branches in the SIG repository, including task statistics
+```repo-insight beanstalk:feature-list --stats git@blueacorn.git.beanstalkapp.com:/blueacorn/sig.git````
+
+
+NOTE: We have not incorporated a progress meter. Executing --stats could take 
+a VERY LONG time to complete all network requests. Be prepared...
+
+
+
+Example Output
+--------------
+
+(last updated 2015-04-02)
+
+See the CSV `beanstalk:feature-list --stats git@blueacorn.git.beanstalkapp.com:/blueacorn/sig.git` output of the SIG repository here:
+
+  https://docs.google.com/a/blueacorn.com/spreadsheets/d/1Q5rXUDoMlppr8hyr5dQtnhbnBXYC0FmXUPUUayI5kIg/edit?usp=sharing
+  
+  
+See the CSV `beanstalk:repo-list --stats` output of ALL repositories here:
+
+  https://docs.google.com/a/blueacorn.com/spreadsheets/d/198FnmDtO3Zk21wx_fq8idmqTWpqQZ0jV1dKbcBAwv30/edit?usp=sharing
+
+
+NOTE: repository size is in bytes.
 
 
 Development
