@@ -14,7 +14,7 @@ class BeanstalkListCommand extends BeanstalkCommand
     {
         $this->setName('beanstalk:list')
             ->setDescription('list all available repositories')
-            ->addOption('stats', null, InputOption::VALUE_NONE, 'if set, include additional branch stats. fires 2 additional api calls per repo, network intensive!');
+            ->addOption('stats', null, InputOption::VALUE_NONE, 'if set, include additional branch stats. WARNING: fires 2 additional api calls per repo, network intensive!');
            // ->addOption('limit', null, InputOption::VALUE_OPTIONAL, 'limit number of repositores returned', 0);
 
         parent::configure();
