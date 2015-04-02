@@ -35,9 +35,7 @@ class BeanstalkStatsCommand extends BeanstalkCommand
 
 
         // @todo add feature branch aggregate size
-
-
-        $output->write($this->formattedOutput(array($repository)), $output::OUTPUT_RAW);
+        $output->formattedWrite($repository);
     }
 }
 

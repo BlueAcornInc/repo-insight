@@ -25,10 +25,9 @@ class BeanstalkFeatureListCommand extends BeanstalkCommand
             throw new \Exception('Repository not found!');
         }
 
-
         $feature_branches = $this->getRepositoryFeatureBranches($repository['id']);
 
-        $output->write($this->formattedOutput($feature_branches), $output::OUTPUT_RAW);
+        $output->formattedWrite($feature_branches);
     }
 }
 

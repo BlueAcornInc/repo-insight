@@ -1,58 +1,101 @@
 <?php
-
 namespace BlueAcorn\RepoInsight;
-
 
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Input\ArrayInput;
 
-
-class Application extends BaseApplication {
+class Application extends BaseApplication
+{
 
     protected $_config = array();
-    const DEFAULT_CONFIG_FILE = '.repo-insight.yml';
-    const FEATURE_BRANCH_PATTERN = '/^features?\//i';
 
+    protected $_nestedCommand = false;
+
+    const DEFAULT_CONFIG_FILE = '.repo-insight.yml';
+
+    const FEATURE_BRANCH_PATTERN = '/^features?\//i';
 
     public function __construct($name = 'UNKNOWN', $version = 'UNKNOWN')
     {
         parent::__construct($name, $version);
 
         // add global options
-        $this->getDefinition()->addOption(new InputOption('--config-file', '-c', InputOption::VALUE_OPTIONAL, 'Path to configuration file containing service credentials. Defaults to <cwd>/' . self::DEFAULT_CONFIG_FILE . ' , falls back to ~/' . self::DEFAULT_CONFIG_FILE));
+        $this->getDefinition()->addOption(
+            new InputOption('--config-file', '-c', InputOption::VALUE_OPTIONAL,
+                'Path to configuration file containing service credentials. Defaults to <cwd>/' .
+                     self::DEFAULT_CONFIG_FILE . ' , falls back to ~/' . self::DEFAULT_CONFIG_FILE));
 
-        // set global event dispatcher
-        //  @todo, we could probably use Application::run vs. an event??
         /*
-        $dispatcher = new EventDispatcher();
-        $dispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $event) {
-            $config_file = $event->getInput()->getParameterOption('--config-file',self::DEFAULT_CONFIG_FILE);
-            $application = $event->getCommand()->getApplication();
+        // set global event dispatcher
+         $dispatcher = new EventDispatcher();
+         $dispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $event) {
 
-            // parse config_file
-            if(!is_file($config_file)) {
-                throw new \Exception('could not find ' . $config_file);
-            }
-            $config = Yaml::parse($config_file);
-            $application->setConfig($config);
-        });
+             $input = $event->getInput();
+             $output = $event->getOutput();
 
+             // set the formatter
 
-        $this->setDispatcher($dispatcher);
-        */
+             if($input->hasArgument('format')) {
+                 var_dump($input->getArgument('format')); die();
+                 $output->setPreferredFormat($input->getArgument('format'));
+             }
+
+         });
+         $this->setDispatcher($dispatcher);
+         */
     }
 
-    public function getConfig() {
+    public function run(InputInterface $input = null, OutputInterface $output = null)
+    {
+
+        if($output === null) {
+            $output = new ApplicationOutput();
+        }
+
+        return parent::run($input, $output);
+    }
+
+    public function getConfig()
+    {
         return $this->_config;
     }
 
-    public function setConfig(Array $config) {
+    public function setConfig(Array $config)
+    {
         return $this->_config = $config;
     }
 
+    public function setNestedCommand($command)
+    {
+        return $this->_nestedCommand = $command;
+    }
 
+    public function getNestedCommand()
+    {
+        return $this->_nestedCommand;
+    }
+
+    public function isNestedCommand()
+    {
+        return ($this->_nestedCommand);
+    }
+
+    public function callNestedCommand($arguments)
+    {
+        $command = $this->getNestedCommand();
+        $input = new ArrayInput($arguments);
+        $output = new ApplicationOutput();
+
+        $output->setSkipWrite(true);
+
+        if($statusCode = $this->find($command)->run($input,$output)) {
+            throw new \Exception('nested command > $command returned non-zero status (' . $statusCode . ')');
+        }
+
+        return $output->getData();
+    }
 }

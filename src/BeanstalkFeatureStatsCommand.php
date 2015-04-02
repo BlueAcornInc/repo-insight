@@ -37,8 +37,7 @@ class BeanstalkFeatureStatsCommand extends BeanstalkCommand
 
         // @todo get branch size
 
-
-        $output->write($this->formattedOutput(array($branch)), $output::OUTPUT_RAW);
+        $output->formattedWrite($branch);
     }
 }
 
