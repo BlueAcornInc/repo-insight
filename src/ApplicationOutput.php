@@ -55,6 +55,7 @@ class ApplicationOutput extends ConsoleOutput
         // make sure our data contains rows instead of an associative object
         if(!is_numeric($first_key)) {
             $data = array($data);
+            $first_key = 0;
         }
 
 

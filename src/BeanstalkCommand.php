@@ -118,7 +118,7 @@ class BeanstalkCommand extends ApplicationCommand
         $branches = array();
 
         foreach ($this->getRepositoryBranches($repo_id) as $branch) {
-            if ($branch['is_feature']) {
+            if ($branch['is_feature'] == 'yes') {
                 $branches[] = $branch;
             }
         }
