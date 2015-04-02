@@ -27,14 +27,31 @@ class BeanstalkStatsCommand extends BeanstalkCommand
 
 
         // add additional stats
+        $branches = $this->getRepositoryBranches($repository['id']);
+        $feature_branches = $this->getRepositoryFeatureBranches($repository['id']);
 
-        $beanstalk = $this->getApplication()->getService('beanstalk');
-        $response = $beanstalk->find_repository_branches($repository['id']);
-
-        $repository['branch_count'] = count($this->getRepositoryBranches($repository['id']));
-        $repository['feature_branch_count'] = count($this->getRepositoryFeatureBranches($repository['id']));
+        $repository['branch_count'] = count($branches);
+        $repository['feature_branch_count'] = count($feature_branches);
         $repository['feature_branch_active_count'] = 0;
 
+
+        // get feature branch stats
+        $application = $this->getApplication();
+        $application->setNestedCommand('beanstalk:feature-stats');
+        foreach($feature_branches as $branch){
+            $arguments = array(
+                'command' => $application->getNestedCommand(),
+                'repo' => $repository['id'],
+                'branch' => $branch['branch']
+            );
+
+            if($feature =  $application->callNestedCommand($arguments)) {
+                if($feature['task_status'] != 'complete') {
+                    // if task status is not complete, flag branch as active
+                    $repository['feature_branch_active_count']++;
+                }
+            }
+        }
 
         // @todo add feature branch aggregate size
         $output->formattedWrite($repository);
