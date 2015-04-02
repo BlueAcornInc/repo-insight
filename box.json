@@ -1,7 +1,8 @@
 {
     "chmod": "0755",
     "directories": [
-        "src"
+        "src",
+        "lib"
     ],
     "files": [
         "vendor/herrera-io/phar-update/res/schema.json"
