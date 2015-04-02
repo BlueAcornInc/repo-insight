@@ -11,13 +11,26 @@ use Symfony\Component\Console\Input\ArrayInput;
 class Application extends BaseApplication
 {
 
+    const DEFAULT_CONFIG_FILE = '.repo-insight.yml';
+    const FEATURE_BRANCH_PATTERN = '/^features?\//i';
+
+    /**
+     * @var array Yaml Config
+     */
     protected $_config = array();
 
+
+    /**
+     * @var string|boolean used when calling commands internally
+     */
     protected $_nestedCommand = false;
 
-    const DEFAULT_CONFIG_FILE = '.repo-insight.yml';
 
-    const FEATURE_BRANCH_PATTERN = '/^features?\//i';
+    /**
+     * @var array registry of REST API services &c
+     */
+    protected $_services = array();
+
 
     public function __construct($name = 'UNKNOWN', $version = 'UNKNOWN')
     {
@@ -97,5 +110,13 @@ class Application extends BaseApplication
         }
 
         return $output->getData();
+    }
+
+    public function addService($name, $instance) {
+        $this->_services[$name] = $instance;
+    }
+
+    public function getService($name) {
+        return (isset($this->_services[$name])) ? $this->_services[$name] : null;
     }
 }
