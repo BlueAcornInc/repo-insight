@@ -61,9 +61,16 @@ beanstalk_username: brice
 beanstalk_token: bab46bb35f1f3744e50da40852ZZZZZZZZZ
 
 
-workfront_endpoint:
-workfront_username:
-workfront_password: 
+# [LIVE]
+# workfront_endpoint: https://blueacorn.attask-ondemand.com
+# workfront_username:
+# workfront_password:
+
+
+# [SANDBOX]
+workfront_endpoint: https://cl02.attasksandbox.com
+workfront_username: toby+php@blueacorn.com
+workfront_password: ...
 
 ```
 
