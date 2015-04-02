@@ -26,7 +26,7 @@ class ApplicationCommand extends Command
         if (! is_file($config_file)) {
             $config_file = getcwd() . '/' . $config_filename;
             if (! is_file($config_file)) {
-                $config_file = getenv('HOME') . '/' . $config_filename;
+                $config_file = getenv('HOME') . '/.repo-insight/' . $config_filename;
             }
         }
 

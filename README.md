@@ -43,7 +43,7 @@ Configuration
 repo-insight uses a YAML configuration file to store service credentials &c.
 
 It first looks for a file named ```.repo-insight.yml``` in the CWD, and then
-in your home/.repo-insight directory (``````).
+in your home/.repo-insight directory (```~/.repo-insight/.repo-insight.yml```).
 
 
 you may specify the config file to use by passing the __--config-file__ option

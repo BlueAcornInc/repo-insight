@@ -42,7 +42,18 @@ class Application extends BaseApplication
                 'Path to configuration file containing service credentials. Defaults to <cwd>/' .
                      self::DEFAULT_CONFIG_FILE . ' , falls back to ~/' . self::DEFAULT_CONFIG_FILE));
 
+
+        // ensure application working directory
+        $working_dir = getenv('HOME') . '/.repo-insight';
+        if(!is_dir($working_dir)) {
+            mkdir($working_dir);
+        }
+
+
         /*
+         * Example of console event handling..
+         *
+
         // set global event dispatcher
          $dispatcher = new EventDispatcher();
          $dispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $event) {
