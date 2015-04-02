@@ -34,10 +34,11 @@ class BeanstalkFeatureListCommand extends BeanstalkCommand
         // augment repository list with branch stats if requested...
         if ($input->getOption('stats')) {
 
-            $application = $this->getApplication();
-            $application->setNestedCommand('beanstalk:feature-stats');
-
             foreach ($feature_branches as $key => $branch) {
+
+                $application = $this->getApplication();
+                $application->setNestedCommand('beanstalk:feature-stats');
+
                 $arguments = array(
                     'command' => $application->getNestedCommand(),
                     'repo' => $repository['id'],

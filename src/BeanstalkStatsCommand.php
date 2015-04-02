@@ -36,9 +36,11 @@ class BeanstalkStatsCommand extends BeanstalkCommand
 
 
         // get feature branch stats
-        $application = $this->getApplication();
-        $application->setNestedCommand('beanstalk:feature-stats');
         foreach($feature_branches as $branch){
+
+            $application = $this->getApplication();
+            $application->setNestedCommand('beanstalk:feature-stats');
+
             $arguments = array(
                 'command' => $application->getNestedCommand(),
                 'repo' => $repository['id'],
