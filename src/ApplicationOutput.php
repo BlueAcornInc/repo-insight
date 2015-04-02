@@ -30,7 +30,7 @@ class ApplicationOutput extends ConsoleOutput
 
     protected function formatData($outputArray, $include_keys = true)
     {
-        return ($this->_preferredFormat == 'csv') ? $this->arrayToCsv($outputArray, $include_keys) : $this->arrayToJSON($outputArray);
+        return ($this->_preferredFormat == 'csv') ? $this->outputCsv($outputArray, $include_keys) : $this->outputJson($outputArray);
     }
 
     public function setPreferredFormat($format) {
@@ -41,25 +41,29 @@ class ApplicationOutput extends ConsoleOutput
         return $this->_preferredFormat = $format;
     }
 
-    public function arrayToCsv($array, $include_header_row = true)
+    public function outputCsv($data, $include_header_row = true)
     {
         $csv = fopen('php://temp', 'w+');
 
-        // make sure we have rows
-        if(!is_array($array)) {
-            $array = array($array);
+        if(!is_array($data)) {
+            $data = array($data);
         }
 
-        if(!isset($array[0])) {
-            $array = array($array);
+        reset($data);
+        $first_key = key($data);
+
+        // make sure our data contains rows instead of an associative object
+        if(!is_numeric($first_key)) {
+            $data = array($data);
         }
+
 
         if ($include_header_row) {
-            $first_row_keys = array_keys($array[0]);
+            $first_row_keys = array_keys($data[$first_key]);
             fputcsv($csv, $first_row_keys);
         }
 
-        foreach ($array as $row) {
+        foreach ($data as $row) {
             if(!is_array($row)) { $row = array($row); }
             fputcsv($csv, $row);
         }
@@ -71,9 +75,9 @@ class ApplicationOutput extends ConsoleOutput
         return $csvStr;
     }
 
-    public function arrayToJSON($array, $include_header_row = true)
+    public function outputJson($data, $include_header_row = true)
     {
-        return json_encode($array);
+        return json_encode($data);
     }
 
     public function getData() {
