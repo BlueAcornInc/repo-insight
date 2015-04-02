@@ -152,16 +152,16 @@ class BeanstalkCommand extends ApplicationCommand
         $feature_pattern = '/^features?\//i';
 
         $feature = (preg_match(Application::FEATURE_BRANCH_PATTERN, $branch));
-        $attask = '';
+        $ref_id = '';
         $description = '';
 
         if ($feature) {
 
             $components = explode('_', preg_replace(Application::FEATURE_BRANCH_PATTERN, '', $branch));
-            $attask_id = array_shift($components);
+            $ref_id_test = array_shift($components);
 
-            if (is_numeric($attask_id)) {
-                $attask = $attask_id;
+            if (is_numeric($ref_id_test)) {
+                $ref_id = $ref_id_test;
                 $description = implode(' ', $components);
             }
         }
@@ -169,8 +169,8 @@ class BeanstalkCommand extends ApplicationCommand
         return array(
             'branch' => $branch,
             'is_feature' => ($feature) ? 'yes' : 'no',
-            'workfront_id' => $attask,
-            'description' => $description
+            'description' => $description,
+            'task_ref_id' => $ref_id
         );
     }
 }
